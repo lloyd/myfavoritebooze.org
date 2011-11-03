@@ -7,6 +7,7 @@ sessions = require('connect-cookie-session'),
 path = require('path'),
 postprocess = require('postprocess'),
 https = require('https'),
+http = require('http'),
 querystring = require('querystring'),
 db = require('./db.js'),
 url = require('url');
@@ -86,6 +87,15 @@ function determineBrowserIDHost(req) {
   return determineBrowserIDURL(req).replace(/http(s?):\/\//, '');
 }
 
+function determineSchemeHostAndPort(url) {
+  var shp = {};
+  shp.scheme = url.match(/^https:/) ? 'https' : 'http';
+  var host_and_port = url.match("^[^:]+://([^/]+)")[1].split(':');
+  shp.host = host_and_port[0];
+  shp.port = host_and_port[1]; // if null, should do the right default
+  return shp;
+}
+
 // a substitution middleware allows us to easily point at different browserid servers
 app.use(postprocess.middleware(function(req, body) {
   var browseridURL = determineBrowserIDURL(req);
@@ -111,8 +121,11 @@ app.post("/api/login", function (req, res) {
   // To verify the assertion we initiate a POST request to the browserid verifier service.
   // If we didn't want to rely on this service, it's possible to implement verification
   // in a library and to do it ourselves.
-  var vreq = https.request({
-    host: determineBrowserIDHost(req),
+  var shp = determineSchemeHostAndPort(determineBrowserIDURL(req));
+  var networkModule = (shp.scheme == 'https')? https : http;
+  var vreq = networkModule.request({
+    host: shp.host,
+    port: shp.port,
     path: "/verify",
     method: 'POST'
   }, function(vres) {
