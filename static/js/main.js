@@ -95,7 +95,7 @@ function loggedOut() {
   l.html('<img src="i/sign_in_blue.png" alt="Sign in">')
     .show().click(function() {
       $("header .login").css('opacity', '0.5');
-      navigator.id.getVerifiedEmail(gotVerifiedEmail);
+      navigator.id.get(gotVerifiedEmail, {});
     }).addClass("clickable").css('opacity','1.0');
 }
 
