@@ -136,7 +136,14 @@ if (document.addEventListener) {
 // myfavoritebeer (have existing cookie), and update the UI accordingly
 $(function() {
   $.get('/api/whoami', function (res) {
-    if (res === null) loggedOut();
-    else loggedIn(res, true);
+    if (res === null) {
+      // see if we are logged in by default
+      navigator.id.get(function(assertion) {
+        alert('auto login: ' + assertion);
+        gotVerifiedEmail(assertion);
+      }, {silent: true});
+    } else {
+      loggedIn(res, true);
+    }
   }, 'json');
 });
