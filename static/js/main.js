@@ -78,7 +78,8 @@ function logout(event) {
     url: '/api/logout',
     success: function() {
       // and then redraw the UI.
-      loggedOut();
+      // first tell browserid we're logged out
+      navigator.id.logout(loggedOut);
     }
   });
 }
