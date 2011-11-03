@@ -140,15 +140,8 @@ if (document.addEventListener) {
 $(function() {
   $.get('/api/whoami', function (res) {
     if (res === null) {
-      // see if we are logged in by default (and gracefully handle the
-      // old browserid api)
-      try {
-        navigator.id.get(function(assertion) {
-          gotVerifiedEmail(assertion);
-        }, {silent: true});
-      } catch(e) {
-        loggedOut();
-      }
+      // see if we are logged in by default
+      navigator.id.get(gotVerifiedEmail, {silent: true});
     } else {
       loggedIn(res, true);
     }
