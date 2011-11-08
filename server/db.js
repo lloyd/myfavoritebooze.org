@@ -36,7 +36,7 @@ exports.connect = function(cb) {
       cb(err);
     });
   });
-}; 
+};
 
 exports.get = function(collection, email, cb) {
   var c = collections[collection].find({ email: email }, { booze: 1 });

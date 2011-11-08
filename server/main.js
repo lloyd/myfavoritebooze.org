@@ -193,7 +193,7 @@ app.get("/api/get", function (req, res) {
 
   db.get(determineEnvironment(req), email, function(err, booze) {
     if (err) {
-      console.log("error getting booze for", email);
+      console.log("error getting booze for", email, ":", err);
       res.writeHead(500);
       res.end();
     } else {
