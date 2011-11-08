@@ -2,7 +2,7 @@
   "name": "myfavoritebooze",
   "version": "0.0.1",
   "dependencies": {
-    "express": "2.4.6",
+    "express": "2.5.0",
     "postprocess": "0.0.2",
     "connect-cookie-session" : "0.0.2",
     "mongodb": "0.9.6-16"

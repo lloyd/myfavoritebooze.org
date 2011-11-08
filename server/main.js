@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// require libraries that we depend on 
+// require libraries that we depend on
 const
 express = require('express'),
 sessions = require('connect-cookie-session'),
@@ -50,7 +50,7 @@ app.use(function (req, res, next) {
         path: '/api',
         httpOnly: true,
         // when you're logged in, you're logged in for an hour
-        maxAge: (1 * 60 * 60 * 1000), 
+        maxAge: (1 * 60 * 60 * 1000),
         secure: false
       }
     })(req, res, next);
@@ -110,7 +110,7 @@ app.get("/api/whoami", function (req, res) {
 app.post("/api/login", function (req, res) {
   // To verify the assertion we initiate a POST request to the browserid verifier service.
   // If we didn't want to rely on this service, it's possible to implement verification
-  // in a library and to do it ourselves.  
+  // in a library and to do it ourselves.
   var vreq = https.request({
     host: determineBrowserIDHost(req),
     path: "/verify",
@@ -128,7 +128,7 @@ app.post("/api/login", function (req, res) {
               console.log("assertion verified successfully for email:", email);
             } else {
               console.log("failed to verify assertion:", verifierResp.reason);
-            }                
+            }
             res.json(email);
           } catch(e) {
             console.log("non-JSON response from verifier");
@@ -142,7 +142,7 @@ app.post("/api/login", function (req, res) {
   // An "audience" argument is embedded in the assertion and must match our hostname.
   // Because this one server runs on multiple different domain names we just use
   // the host parameter out of the request.
-  var audience = req.headers['host'] ? req.headers['host'] : localHostname;   
+  var audience = req.headers['host'] ? req.headers['host'] : localHostname;
   var data = querystring.stringify({
     assertion: req.body.assertion,
     audience: audience
@@ -180,7 +180,7 @@ app.get("/api/get", function (req, res) {
 
   db.get(determineEnvironment(req), email, function(err, booze) {
     if (err) {
-      console.log("error getting booze for", email); 
+      console.log("error getting booze for", email);
       res.writeHead(500);
       res.end();
     } else {
@@ -217,7 +217,7 @@ app.post("/api/set", function (req, res) {
 
   db.set(determineEnvironment(req), email, booze, function(err) {
     if (err) {
-      console.log("setting booze for", email, "to", booze); 
+      console.log("setting booze for", email, "to", booze);
       res.writeHead(500);
       res.end();
     } else {
