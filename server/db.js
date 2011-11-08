@@ -1,7 +1,7 @@
-// db.js is a tiny persistence layer for myfavoritebeer that uses
+// db.js is a tiny persistence layer for myfavoritebooze that uses
 // mongodb and the mongodb client library.
 //
-// This implementation is really not the point of the myfavoritebeer
+// This implementation is really not the point of the myfavoritebooze
 // example code and is just provided for completeness (the point is
 // how you can do authentication with browserid).  
 
@@ -25,10 +25,10 @@ exports.connect = function(cb) {
   var server = new mongodb.Server(bits.hostname, bits.port, {});
   new mongodb.Db(bits.pathname.substr(1), server, {}).open(function (err, cli) {
     if (err) return cb(err);
-    collections.dev = new mongodb.Collection(cli, 'devbeers');
+    collections.dev = new mongodb.Collection(cli, 'devboozes');
     collections.local = collections.dev;
-    collections.beta = new mongodb.Collection(cli, 'betabeers');
-    collections.prod = new mongodb.Collection(cli, 'prodbeers');
+    collections.beta = new mongodb.Collection(cli, 'betaboozes');
+    collections.prod = new mongodb.Collection(cli, 'prodboozes');
 
     // now authenticate
     var auth = bits.auth.split(':');
@@ -39,20 +39,20 @@ exports.connect = function(cb) {
 }; 
 
 exports.get = function(collection, email, cb) {
-  var c = collections[collection].find({ email: email }, { beer: 1 });
+  var c = collections[collection].find({ email: email }, { booze: 1 });
   c.toArray(function(err, docs) {
     if (err) return cb(err);
     if (docs.length != 1) return cb("consistency error!  more than one doc returned!");
-    cb(undefined, docs[0].beer);
+    cb(undefined, docs[0].booze);
   });
 };
 
-exports.set = function(collection, email, beer, cb) {
+exports.set = function(collection, email, booze, cb) {
   collections[collection].update(
     { email: email },
     {
       email: email,
-      beer: beer
+      booze: booze
     },
     {
       safe:true,

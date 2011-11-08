@@ -1,4 +1,4 @@
-## MyFavoriteBeer.org - A BrowserID example site
+## MyFavoriteBooze.org - A BrowserID example site
 
 This is a simple site that demonstrates how
 [BrowserID](https://browserid.org) can be used to build a better login
@@ -19,12 +19,12 @@ browserid as fast as possible.
 This repository goes into greater depth than the tutorial, and
 provides a full working example of a small but complete website that
 uses BrowserID for authentication.  This code is running at
-[myfavoritebeer.org](http://myfavoritebeer.org).
+[myfavoritebooze.org](http://myfavoritebooze.org).
 
 ## The Implementation
 
-MyFavoriteBeer is a simple site that allows a user to log in and store a single string
-of information, their favorite beer.  The site consists of a static HTML frontend
+MyFavoriteBooze is a simple site that allows a user to log in and store a single string
+of information, their favorite booze.  The site consists of a static HTML frontend
 (code under `static/`), and
 a simple web services API implemented by a node.js server (code under `server/`).
 
@@ -34,8 +34,8 @@ The web services api exported by the node.js server consists of the following:
 
   * **`/api/whoami`** - reports whether the current session is authenticated
   * **`/api/login`** - accepts a browserid assertion to allow the user to authenticate
-  * **`/api/get`** - returns the current user's favorite beer
-  * **`/api/set`** - sets the current user's favorite beer
+  * **`/api/get`** - returns the current user's favorite booze
+  * **`/api/set`** - sets the current user's favorite booze
   * **`/api/logout`** - clears the current session
 
 Further documentation of these calls is available in the source code. 
@@ -45,7 +45,7 @@ Further documentation of these calls is available in the source code.
 The most interesting part of this example is how authentication occurs.  Client code
 includes the browserid javascript include file, and upon a user clicking the *sign-in*
 button, `navigator.id.getVerifiedEmail()` is invoked.  BrowserID returns a string 
-which contains an *assertion*.  This assertion is passed up to the myfavoritebeer server
+which contains an *assertion*.  This assertion is passed up to the myfavoritebooze server
 via the `/api/login` api.  The server *verifies* this assertion using the free 
 verifier service by `POST`ing to `https://browserid.org/verify`.  Finally, upon successful
 verification, the server sets a cookie which represents an authenticated session.
@@ -60,7 +60,7 @@ and keeps the example simple.
 
 ### Persistence
 
-We have to store the beer preferences *somewhere*.  mongodb is used for this purpose and
+We have to store the booze preferences *somewhere*.  mongodb is used for this purpose and
 a very simple database abstraction layer exists in `db.js`.  The details of interacting
 with the database aren't important, but if you're curious have a look in db.js.
 

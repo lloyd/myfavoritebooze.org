@@ -12,7 +12,7 @@ db = require('./db.js'),
 url = require('url');
 
 // the key with which session cookies are encrypted
-const COOKIE_SECRET = process.env.SEKRET || 'you love, i love, we all love beer!';
+const COOKIE_SECRET = process.env.SEKRET || 'you love, i love, we all love booze!';
 
 // The IP Address to listen on.
 const IP_ADDRESS = process.env.IP_ADDRESS || '127.0.0.1';
@@ -45,7 +45,7 @@ app.use(function (req, res, next) {
   if (/^\/api/.test(req.url)) {
     return sessions({
       secret: COOKIE_SECRET,
-      key: 'myfavoritebeer_session',
+      key: 'myfavoritebooze_session',
       cookie: {
         path: '/api',
         httpOnly: true,
@@ -60,13 +60,13 @@ app.use(function (req, res, next) {
 });
 
 // The next three functions contain some fancy logic to make it so
-// we can run multiple different versions of myfavoritebeer on the
+// we can run multiple different versions of myfavoritebooze on the
 // same server, each which uses a different browserid server
 // (dev/beta/prod):
 function determineEnvironment(req) {
-  if (req.headers['host'] === 'myfavoritebeer.org') return 'prod';
-  else if (req.headers['host'] === 'beta.myfavoritebeer.org') return 'beta';
-  else if (req.headers['host'] === 'dev.myfavoritebeer.org') return 'dev';
+  if (req.headers['host'] === 'myfavoritebooze.org') return 'prod';
+  else if (req.headers['host'] === 'beta.myfavoritebooze.org') return 'beta';
+  else if (req.headers['host'] === 'dev.myfavoritebooze.org') return 'dev';
   else return 'local';
 }
 
@@ -160,7 +160,7 @@ app.post("/api/logout", function (req, res) {
 });
 
 // /api/get requires an authenticated session, and accesses the current user's favorite
-// beer out of the database.
+// booze out of the database.
 app.get("/api/get", function (req, res) {
   var email;
 
@@ -168,7 +168,7 @@ app.get("/api/get", function (req, res) {
 
   if (!email) {
     res.writeHead(400, {"Content-Type": "text/plain"});
-    res.write("Bad Request: you must be authenticated to get your beer");
+    res.write("Bad Request: you must be authenticated to get your booze");
     res.end();
     return;
   }
@@ -178,34 +178,34 @@ app.get("/api/get", function (req, res) {
     return res.json("no database");
   }
 
-  db.get(determineEnvironment(req), email, function(err, beer) {
+  db.get(determineEnvironment(req), email, function(err, booze) {
     if (err) {
-      console.log("error getting beer for", email); 
+      console.log("error getting booze for", email); 
       res.writeHead(500);
       res.end();
     } else {
-      res.json(beer);
+      res.json(booze);
     }
   });
 });
 
 // /api/set requires an authenticated session, and sets the current user's favorite
-// beer in the database.
+// booze in the database.
 app.post("/api/set", function (req, res) {
   var email = req.session.email;
 
   if (!email) {
     res.writeHead(400, {"Content-Type": "text/plain"});
-    res.write("Bad Request: you must be authenticated to get your beer");
+    res.write("Bad Request: you must be authenticated to get your booze");
     res.end();
     return;
   }
 
-  var beer = req.body.beer;
+  var booze = req.body.booze;
 
-  if (!beer) {
+  if (!booze) {
     res.writeHead(400, {"Content-Type": "text/plain"});
-    res.write("Bad Request: a 'beer' parameter is required to set your favorite beer");
+    res.write("Bad Request: a 'booze' parameter is required to set your favorite booze");
     res.end();
     return;
   }
@@ -215,9 +215,9 @@ app.post("/api/set", function (req, res) {
     return res.json(true);
   }
 
-  db.set(determineEnvironment(req), email, beer, function(err) {
+  db.set(determineEnvironment(req), email, booze, function(err) {
     if (err) {
-      console.log("setting beer for", email, "to", beer); 
+      console.log("setting booze for", email, "to", booze); 
       res.writeHead(500);
       res.end();
     } else {
