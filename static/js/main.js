@@ -2,7 +2,7 @@ function setSessions(val) {
   if (navigator.id) {
     navigator.id.sessions = val ? val : [ ];
   }
-} 
+}
 
 // when the user is found to be logged in we'll update the UI, fetch and
 // display the user's favorite beer from the server, and set up handlers to
@@ -96,7 +96,9 @@ function loggedOut() {
   l.html('<img src="i/sign_in_blue.png" alt="Sign in">')
     .show().click(function() {
       $("header .login").css('opacity', '0.5');
-      navigator.id.get(gotVerifiedEmail, {});
+      // change this call to .get() when the new BrowserID API
+      // with persisten support is fully deployed
+      navigator.id.getVerifiedEmail(gotVerifiedEmail);
     }).addClass("clickable").css('opacity','1.0');
 }
 
@@ -138,10 +140,15 @@ if (document.addEventListener) {
 $(function() {
   $.get('/api/whoami', function (res) {
     if (res === null) {
-      // see if we are logged in by default
-      navigator.id.get(function(assertion) {
-        gotVerifiedEmail(assertion);
-      }, {silent: true});
+      // see if we are logged in by default (and gracefully handle the
+      // old browserid api)
+      try {
+        navigator.id.get(function(assertion) {
+          gotVerifiedEmail(assertion);
+        }, {silent: true});
+      } catch(e) {
+        loggedOut();
+      }
     } else {
       loggedIn(res, true);
     }
