@@ -50,8 +50,10 @@ app.use(function (req, res, next) {
       cookie: {
         path: '/api',
         httpOnly: true,
-        // when you're logged in, you're logged in for an hour
-        maxAge: (1 * 60 * 60 * 1000),
+        // when you're logged in, you're logged in for the duration of
+        // the browser session.  BrowserID's persistent login lets users
+        // "stay signed in"
+        maxAge: false,
         secure: false
       }
     })(req, res, next);
