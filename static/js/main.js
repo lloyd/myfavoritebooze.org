@@ -140,7 +140,6 @@ $(function() {
     if (res === null) {
       // see if we are logged in by default
       navigator.id.get(function(assertion) {
-        alert('auto login: ' + assertion);
         gotVerifiedEmail(assertion);
       }, {silent: true});
     } else {
