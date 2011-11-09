@@ -5,8 +5,8 @@ function setSessions(val) {
 }
 
 // when the user is found to be logged in we'll update the UI, fetch and
-// display the user's favorite beer from the server, and set up handlers to
-// wait for user input (specifying their favorite beer).
+// display the user's favorite booze from the server, and set up handlers to
+// wait for user input (specifying their favorite booze).
 function loggedIn(email, immediate) {
   setSessions([ { email: email } ]);
 
@@ -19,7 +19,7 @@ function loggedIn(email, immediate) {
     .append($("<span>!</span>"));
   l.append($('<div><a id="logout" href="#" >(logout)</a></div>'));
   l.unbind('click');
-  
+
   $("#logout").bind('click', logout);
 
   if (immediate) {
@@ -61,7 +61,7 @@ function save(event) {
   $.ajax({
     type: 'POST',
     url: '/api/set',
-    data: { beer: $("input").val() },
+    data: { booze: $("input").val() },
     success: function(res, status, xhr) {
       // noop
     }
@@ -136,7 +136,7 @@ if (document.addEventListener) {
 }
 
 // at startup let's check to see whether we're authenticated to
-// myfavoritebeer (have existing cookie), and update the UI accordingly
+// myfavoritebooze (have existing cookie), and update the UI accordingly
 $(function() {
   $.get('/api/whoami', function (res) {
     if (res === null) {
