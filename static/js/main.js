@@ -79,7 +79,11 @@ function logout(event) {
     success: function() {
       // and then redraw the UI.
       // first tell browserid we're logged out
-      navigator.id.logout(loggedOut);
+      if (navigator.id.logout) {
+        navigator.id.logout(loggedOut);
+      } else {
+        loggedOut();
+      }
     }
   });
 }
