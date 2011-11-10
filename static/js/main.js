@@ -145,7 +145,11 @@ $(function() {
   $.get('/api/whoami', function (res) {
     if (res === null) {
       // see if we are logged in by default
-      navigator.id.get(gotVerifiedEmail, {silent: true});
+      if (navigator.id.get) {
+        navigator.id.get(gotVerifiedEmail, {silent: true});
+      } else {
+        loggedOut();
+      }
     } else {
       loggedIn(res, true);
     }
