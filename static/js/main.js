@@ -1,3 +1,8 @@
+// monkey patch in .id.get() for older versions of browserid
+if (navigator.id && navigator.id.getVerifiedEmail && !navigator.id.get) {
+  navigator.id.get = navigator.id.getVerifiedEmail;
+}
+
 function setSessions(val) {
   if (navigator.id) {
     navigator.id.sessions = val ? val : [ ];
@@ -100,9 +105,7 @@ function loggedOut() {
   l.html('<img src="i/sign_in_blue.png" alt="Sign in">')
     .show().click(function() {
       $("header .login").css('opacity', '0.5');
-      // change this call to .get() when the new BrowserID API
-      // with persisten support is fully deployed
-      navigator.id.getVerifiedEmail(gotVerifiedEmail);
+      navigator.id.get(gotVerifiedEmail, {allowPersistent: true});
     }).addClass("clickable").css('opacity','1.0');
 }
 
@@ -133,7 +136,7 @@ function gotVerifiedEmail(assertion) {
 if (document.addEventListener) {
   document.addEventListener("login", function(event) {
     $("header .login").css('opacity', '0.5');
-    navigator.id.getVerifiedEmail(gotVerifiedEmail);
+    navigator.id.get(gotVerifiedEmail, {allowPersistent: true});
   }, false);
 
   document.addEventListener("logout", logout, false);
