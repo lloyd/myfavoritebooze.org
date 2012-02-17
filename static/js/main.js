@@ -122,8 +122,8 @@ function gotVerifiedEmail(assertion) {
         if (res === null) loggedOut();
         else loggedIn(res);
       },
-      error: function(res, status, xhr) {
-        alert("login failure" + res);
+      error: function(xhr, status, error) {
+        alert("login failure " + error);
       }
     });
   }
@@ -143,7 +143,7 @@ if (document.addEventListener) {
 }
 
 $('#installApp button').click(function() {
-  navigator.mozApps.install("/myfavoritebeer.webapp", "receipt goes here", 
+  navigator.mozApps.install("/myfavoritebeer.webapp", "receipt goes here",
     function success() {
       console.log('Install success');
     }, function error() {
